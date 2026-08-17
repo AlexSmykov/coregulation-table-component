@@ -1,0 +1,49 @@
+<div class="reactive-table-wrapper">
+  <table class="reactive-table">
+    <thead class="reactive-table-head">
+      @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+        <tr class="reactive-table-row">
+          @for (header of headerGroup.headers; track header.id) {
+            <th class="reactive-table-header-cell">
+              @if (!header.isPlaceholder) {
+                <ng-container *flexRenderHeader="header; let headerCell">
+                  {{ headerCell }}
+                </ng-container>
+              }
+            </th>
+          }
+        </tr>
+      }
+    </thead>
+
+    <tbody class="reactive-table-body">
+      @for (row of table.getRowModel().rows; track row.id) {
+        <tr class="reactive-table-row">
+          @for (cell of row.getAllCells(); track cell.id) {
+            <td class="reactive-table-body-cell">
+              <ng-container *flexRenderCell="cell; let renderCell">
+                {{ renderCell }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+
+    <tfoot class="reactive-table-footer">
+      @for (footerGroup of table.getFooterGroups(); track footerGroup.id) {
+        <tr class="reactive-table-row">
+          @for (footer of footerGroup.headers; track footer.id) {
+            <th class="reactive-table-footer-cell">
+              @if (!footer.isPlaceholder) {
+                <ng-container *flexRenderFooter="footer; let footerCell">
+                  {{ footerCell }}
+                </ng-container>
+              }
+            </th>
+          }
+        </tr>
+      }
+    </tfoot>
+  </table>
+</div>

@@ -4,7 +4,7 @@ const eslintConfigPrettier = require('eslint-config-prettier/flat');
 const tseslint = require('typescript-eslint');
 
 module.exports = tseslint.config(
-  { ignores: ['src/index.html'] },
+  { ignores: [] },
   {
     files: ['**/*.ts'],
     extends: [
@@ -20,7 +20,7 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'element',
-          prefix: 'crg',
+          prefix: 'app',
           style: 'kebab-case',
         },
       ],
@@ -28,7 +28,7 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'attribute',
-          prefix: 'crg',
+          prefix: 'app',
           style: 'camelCase',
         },
       ],
