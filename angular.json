@@ -7,7 +7,8 @@
   "newProjectRoot": "projects",
   "projects": {
     "coregulation-table-component": {
-      "projectType": "application","schematics": {
+      "projectType": "application",
+      "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
@@ -21,17 +22,10 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/assets"
-
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/assets"],
+            "styles": ["src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
+              "includePaths": ["src/styles"]
             }
           },
           "configurations": {
@@ -60,6 +54,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 4216,
+            "host": "0.0.0.0"
+          },
           "configurations": {
             "production": {
               "buildTarget": "coregulation-table-component:build:production"
