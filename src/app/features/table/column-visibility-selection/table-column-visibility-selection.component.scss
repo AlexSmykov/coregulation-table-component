@@ -1,0 +1,20 @@
+:host {
+  position: relative;
+}
+
+.wrapper {
+  position: absolute;
+  top: 24px;
+
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: self-start;
+}

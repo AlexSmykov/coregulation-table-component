@@ -4,11 +4,11 @@ import { Department } from '../../../../core/types/catalog.type';
 
 @Component({
   selector: 'app-table-department-cell',
-  templateUrl: './app-table-department-cell.component.html',
-  styleUrl: './app-table-department-cell.component.scss',
+  templateUrl: './table-department-cell.component.html',
+  styleUrl: './table-department-cell.component.scss',
   imports: [],
 })
-export class AppTableDepartmentCellComponent {
+export class TableDepartmentCellComponent {
   readonly department = input.required<Department>();
 
   readonly names = DEPARTMENT_NAMES;

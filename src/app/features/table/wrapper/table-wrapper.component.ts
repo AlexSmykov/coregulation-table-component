@@ -1,9 +1,10 @@
-import { Component, computed, input, model, ViewEncapsulation } from '@angular/core';
+import { Component, computed, inject, input, model, ViewEncapsulation } from '@angular/core';
 import {
   ColumnDef,
   columnOrderingFeature,
   columnResizingFeature,
   columnSizingFeature,
+  columnVisibilityFeature,
   FlexRenderCell,
   injectTable,
   isFunction,
@@ -16,26 +17,31 @@ import {
   Updater,
 } from '@tanstack/angular-table';
 import { DEFAULT_PAGINATION } from '../../../core/consts/pagination.const';
+import { COLUMN_VISIBILITY_STATE_SERVICE_TOKEN } from './table-wrapper.token';
 
 @Component({
   selector: 'app-table-wrapper',
-  templateUrl: './app-table-wrapper.component.html',
-  styleUrl: './app-table-wrapper.component.scss',
+  templateUrl: './table-wrapper.component.html',
+  styleUrl: './table-wrapper.component.scss',
   encapsulation: ViewEncapsulation.None,
   imports: [FlexRenderCell],
 })
-export class AppTableWrapperComponent<Data extends object> {
+export class TableWrapperComponent<Data extends object> {
   readonly data = input.required<Data[]>();
   readonly columns = input.required<ColumnDef<TableFeatures, Data>[]>();
   readonly withPagination = input(true);
+  readonly withVisibilityChange = input(true);
   readonly withSorting = input(true);
   readonly withColumnResize = input(true);
   readonly withColumnOrder = input(true);
   readonly itemCount = input(0);
   readonly isLoading = input(false);
 
+  readonly #columnVisibilityStateService = inject(COLUMN_VISIBILITY_STATE_SERVICE_TOKEN);
+
   readonly pagination = model<PaginationState>(DEFAULT_PAGINATION);
   readonly sorting = model<SortingState>([]);
+  readonly columnVisibilityState = this.#columnVisibilityStateService.visibilityState;
 
   readonly table = injectTable(() => ({
     features: this.features(),
@@ -44,6 +50,7 @@ export class AppTableWrapperComponent<Data extends object> {
     state: {
       pagination: this.pagination(),
       sorting: this.sorting(),
+      columnVisibility: this.columnVisibilityState(),
     },
     columnResizeMode: 'onChange' as const,
     defaultColumn: {
@@ -60,6 +67,7 @@ export class AppTableWrapperComponent<Data extends object> {
   readonly features = computed(() =>
     tableFeatures({
       ...(this.withPagination() && { rowPaginationFeature }),
+      ...(this.withVisibilityChange() && { columnVisibilityFeature }),
       ...(this.withSorting() && { rowSortingFeature }),
       ...(this.withColumnResize() && { columnSizingFeature, columnResizingFeature }),
       ...(this.withColumnOrder() && { columnOrderingFeature }),

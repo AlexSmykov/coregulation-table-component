@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { AppDemoComponent } from './features/demo/app-demo.component';
+import { ActTableComponent } from './features/act-table/act-table.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [AppDemoComponent],
+  imports: [ActTableComponent],
 })
 export class AppComponent {}

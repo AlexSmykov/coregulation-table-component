@@ -3,11 +3,11 @@ import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-table-date-cell',
-  templateUrl: './app-table-date-cell.component.html',
-  styleUrl: './app-table-date-cell.component.scss',
+  templateUrl: './table-date-cell.component.html',
+  styleUrl: './table-date-cell.component.scss',
   imports: [DatePipe],
 })
-export class AppTableDateCellComponent {
+export class TableDateCellComponent {
   readonly time = input.required<number>();
   readonly format = input<string>('dd.MM.yyyy');
 }

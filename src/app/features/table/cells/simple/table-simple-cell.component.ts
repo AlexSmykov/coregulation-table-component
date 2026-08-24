@@ -2,10 +2,10 @@ import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-table-simple-cell',
-  templateUrl: './app-table-simple-cell.component.html',
-  styleUrl: './app-table-simple-cell.component.scss',
+  templateUrl: './table-simple-cell.component.html',
+  styleUrl: './table-simple-cell.component.scss',
   imports: [],
 })
-export class AppTableSimpleCellComponent {
+export class TableSimpleCellComponent {
   readonly data = input.required<string | number>();
 }

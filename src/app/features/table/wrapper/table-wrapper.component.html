@@ -22,7 +22,7 @@
       <tbody class="reactive-table-body">
         @for (row of table.getRowModel().rows; track row.id) {
           <tr class="reactive-table-row">
-            @for (cell of row.getAllCells(); track cell.id) {
+            @for (cell of row.getVisibleCells(); track cell.id) {
               <td class="reactive-table-body-cell">
                 <ng-container *flexRenderCell="cell; let renderCell">
                   {{ renderCell }}
