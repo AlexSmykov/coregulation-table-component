@@ -4,9 +4,21 @@
   gap: 4px;
 }
 
-.reactive-table-header-cell {
+.table-header-cell {
   position: relative;
   white-space: nowrap;
+}
+
+.table-body {
+  display: grid;
+
+  .table-body-row {
+    display: flex;
+    width: 100%;
+    height: 30px;
+    content-visibility: auto;
+    contain-intrinsic-height: auto 30px;
+  }
 }
 
 .resizer {
