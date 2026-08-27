@@ -3,3 +3,32 @@
   flex-direction: row;
   gap: 4px;
 }
+
+.reactive-table-header-cell {
+  position: relative;
+  white-space: nowrap;
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: -2px;
+
+  height: 100%;
+  width: 4px;
+
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.resizer.isResizing {
+  opacity: 1;
+}
+
+.ellipsis {
+  width: inherit;
+  min-width: 0;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}

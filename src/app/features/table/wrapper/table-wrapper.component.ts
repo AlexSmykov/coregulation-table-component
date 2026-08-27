@@ -1,9 +1,18 @@
-import { Component, computed, inject, input, model, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  untracked,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   ColumnDef,
   columnOrderingFeature,
   columnResizingFeature,
   columnSizingFeature,
+  ColumnSizingState,
   columnVisibilityFeature,
   FlexRenderCell,
   injectTable,
@@ -17,7 +26,13 @@ import {
   Updater,
 } from '@tanstack/angular-table';
 import { DEFAULT_PAGINATION } from '../../../core/consts/pagination.const';
-import { COLUMN_VISIBILITY_STATE_SERVICE_TOKEN } from './table-wrapper.token';
+import {
+  COLUMN_SIZE_STATE_SERVICE_TOKEN,
+  COLUMN_VISIBILITY_STATE_SERVICE_TOKEN,
+} from './table-wrapper.token';
+
+const MIN_COLUMN_SIZE = 100;
+const MAX_COLUMN_SIZE = 500;
 
 @Component({
   selector: 'app-table-wrapper',
@@ -37,10 +52,12 @@ export class TableWrapperComponent<Data extends object> {
   readonly itemCount = input(0);
   readonly isLoading = input(false);
 
-  readonly #columnVisibilityStateService = inject(COLUMN_VISIBILITY_STATE_SERVICE_TOKEN);
-
   readonly pagination = model<PaginationState>(DEFAULT_PAGINATION);
   readonly sorting = model<SortingState>([]);
+
+  readonly #columnVisibilityStateService = inject(COLUMN_VISIBILITY_STATE_SERVICE_TOKEN);
+  readonly #columnSizeStateService = inject(COLUMN_SIZE_STATE_SERVICE_TOKEN);
+
   readonly columnVisibilityState = this.#columnVisibilityStateService.visibilityState;
 
   readonly table = injectTable(() => ({
@@ -51,17 +68,23 @@ export class TableWrapperComponent<Data extends object> {
       pagination: this.pagination(),
       sorting: this.sorting(),
       columnVisibility: this.columnVisibilityState(),
+      columnSizing: this.#columnSizeStateService.sizeState(),
     },
     columnResizeMode: 'onChange' as const,
+    columnResizeDirection: 'ltr',
     defaultColumn: {
-      minSize: 60,
-      maxSize: 800,
+      minSize: MIN_COLUMN_SIZE,
+      maxSize: MAX_COLUMN_SIZE,
     },
     manualPagination: true,
     onPaginationChange: (updater: Updater<PaginationState>) =>
       isFunction(updater) ? this.pagination.update(updater) : this.pagination.set(updater),
     onSortingChange: (updater: Updater<SortingState>) =>
       isFunction(updater) ? this.sorting.update(updater) : this.sorting.set(updater),
+    onColumnSizingChange: (updater: Updater<ColumnSizingState>) =>
+      isFunction(updater)
+        ? this.#columnSizeStateService.sizeState.update(updater)
+        : this.#columnSizeStateService.sizeState.set(updater),
   }));
 
   readonly features = computed(() =>
@@ -91,6 +114,23 @@ export class TableWrapperComponent<Data extends object> {
     }
 
     return pageButtons;
+  });
+
+  readonly tableStyle = computed(() => {
+    void this.table.atoms.columnSizing.get();
+
+    return untracked(() => {
+      const styles: Record<string, string> = { display: 'grid' };
+
+      for (const header of this.table.getFlatHeaders()) {
+        styles[`--header-${header.id}-size`] = `${header.getSize()}`;
+        styles[`--col-${header.column.id}-size`] = `${header.column.getSize()}`;
+      }
+
+      styles['width'] = `${this.table.getTotalSize()}px`;
+
+      return styles;
+    });
   });
 
   setPage(page: number) {

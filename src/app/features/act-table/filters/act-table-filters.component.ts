@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TableColumnVisibilitySelectionComponent } from '../../table/column-visibility-selection/table-column-visibility-selection.component';
-import { ActTableColumnVisibilityService } from '../act-table-column-visibility.service';
-import { ACT_COLUMNS_NAMES } from '../act-table.columns';
+import { ActTableColumnService } from '../act-table-column.service';
+import { ACT_COLUMNS_SETTINGS } from '../act-table.columns';
 
 @Component({
   selector: 'app-act-table-filters',
@@ -10,9 +10,11 @@ import { ACT_COLUMNS_NAMES } from '../act-table.columns';
   imports: [TableColumnVisibilitySelectionComponent],
 })
 export class ActTableFiltersComponent {
-  readonly #actTableColumnVisibilityService = inject(ActTableColumnVisibilityService);
+  readonly #actTableColumnVisibilityService = inject(ActTableColumnService);
 
   readonly columnFormGroup = this.#actTableColumnVisibilityService.columnFormGroup;
 
-  readonly columnNames = ACT_COLUMNS_NAMES;
+  readonly columnNames = Object.fromEntries(
+    Object.entries(ACT_COLUMNS_SETTINGS).map(([key, value]) => [key, value.name]),
+  );
 }

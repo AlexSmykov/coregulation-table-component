@@ -2,16 +2,30 @@
   <p>Загрузка...</p>
 } @else {
   <div class="reactive-table-wrapper">
-    <table class="reactive-table">
+    <table class="reactive-table" [style]="tableStyle()">
       <thead class="reactive-table-head">
         @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
           <tr class="reactive-table-row">
             @for (header of headerGroup.headers; track header.id) {
-              <th class="reactive-table-header-cell">
+              <th
+                class="reactive-table-header-cell"
+                [attr.colspan]="header.colSpan"
+                [style.width]="'calc(var(--header-' + header.id + '-size) * 1px)'"
+              >
                 @if (!header.isPlaceholder) {
-                  <ng-container *flexRenderHeader="header; let headerCell">
-                    {{ headerCell }}
-                  </ng-container>
+                  <div class="ellipsis">
+                    <ng-container *flexRenderHeader="header; let headerCell">
+                      {{ headerCell }}
+                    </ng-container>
+                  </div>
+
+                  <div
+                    class="resizer"
+                    [class.isResizing]="header.column.getIsResizing()"
+                    (dblclick)="header.column.resetSize()"
+                    (mousedown)="header.getResizeHandler()($event)"
+                    (touchstart)="header.getResizeHandler()($event)"
+                  ></div>
                 }
               </th>
             }
@@ -19,11 +33,23 @@
         }
       </thead>
 
-      <tbody class="reactive-table-body">
+      <tbody class="reactive-table-body" style="display: grid">
         @for (row of table.getRowModel().rows; track row.id) {
-          <tr class="reactive-table-row">
+          <tr
+            class="reactive-table-row"
+            style="
+              display: flex;
+              width: 100%;
+              height: 30px;
+              content-visibility: auto;
+              contain-intrinsic-height: auto 30px;
+            "
+          >
             @for (cell of row.getVisibleCells(); track cell.id) {
-              <td class="reactive-table-body-cell">
+              <td
+                class="reactive-table-body-cell"
+                [style.width]="'calc(var(--col-' + cell.column.id + '-size) * 1px)'"
+              >
                 <ng-container *flexRenderCell="cell; let renderCell">
                   {{ renderCell }}
                 </ng-container>
@@ -40,7 +66,12 @@
           @for (footerGroup of footerGroups; track footerGroup.id) {
             <tr class="reactive-table-row">
               @for (footer of footerGroup.headers; track footer.id) {
-                <th class="reactive-table-footer-cell">
+                <th
+                  class="reactive-table-footer-cell"
+                  [attr.colspan]="footer.colSpan"
+                  [style.width]="'calc(var(--header-' + footer.id + '-size) * 1px)'"
+                >
+                  >
                   @if (!footer.isPlaceholder) {
                     <ng-container *flexRenderFooter="footer; let footerCell">
                       {{ footerCell }}

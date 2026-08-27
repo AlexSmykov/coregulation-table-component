@@ -1,5 +1,5 @@
-import { Signal } from '@angular/core';
-import { ColumnVisibilityState } from '@tanstack/angular-table';
+import { Signal, WritableSignal } from '@angular/core';
+import { ColumnSizingState, ColumnVisibilityState } from '@tanstack/angular-table';
 
 export type ColumnVisibility = {
   defaultVisibility: boolean;
@@ -12,4 +12,14 @@ export type ColumnVisibilityStateService = {
 
 export type ColumnsVisibilityForm<Keys extends string = string> = {
   [key in Keys]: boolean;
+};
+
+export type ColumnSize = {
+  minSize?: number;
+  maxSize?: number;
+  currentSize: number;
+};
+
+export type ColumnSizeStateService = {
+  sizeState: WritableSignal<ColumnSizingState>;
 };

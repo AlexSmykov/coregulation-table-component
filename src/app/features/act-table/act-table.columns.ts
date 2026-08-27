@@ -1,14 +1,4 @@
-import {
-  ColumnDef,
-  createColumnHelper,
-  flexRenderComponent,
-  TableFeatures,
-} from '@tanstack/angular-table';
-import { Act } from '../../core/api/act/act-api.type';
-import { TableDateCellComponent } from '../table/cells/date/table-date-cell.component';
-import { TableDepartmentCellComponent } from '../table/cells/department/table-department-cell.component';
-import { TableSimpleCellComponent } from '../table/cells/simple/table-simple-cell.component';
-import { ColumnVisibility } from '../table/wrapper/table-wrapper.type';
+import { TableColumnData } from '../../core/types/table.type';
 import { ActColumn } from './act-table.type';
 
 export const ACT_COLUMNS = {
@@ -21,100 +11,61 @@ export const ACT_COLUMNS = {
   editedAt: 'editedAt',
 } as const;
 
-export const ACT_COLUMNS_VISIBILITY_SETTINGS: Record<ActColumn, ColumnVisibility> = {
+export const ACT_COLUMNS_SETTINGS: Record<ActColumn, TableColumnData> = {
   [ACT_COLUMNS.title]: {
+    name: 'Название',
     defaultVisibility: true,
     canChangeVisibility: false,
+    minSize: 110,
+    maxSize: 200,
+    currentSize: 110,
   },
   [ACT_COLUMNS.type]: {
+    name: 'Тип',
     defaultVisibility: true,
     canChangeVisibility: true,
+    minSize: 110,
+    maxSize: 200,
+    currentSize: 110,
   },
   [ACT_COLUMNS.category]: {
+    name: 'Категория',
     defaultVisibility: true,
     canChangeVisibility: true,
+    minSize: 110,
+    maxSize: 200,
+    currentSize: 110,
   },
   [ACT_COLUMNS.author]: {
+    name: 'Автор',
     defaultVisibility: false,
     canChangeVisibility: true,
+    minSize: 110,
+    maxSize: 200,
+    currentSize: 110,
   },
   [ACT_COLUMNS.department]: {
+    name: 'Департамент',
     defaultVisibility: true,
     canChangeVisibility: true,
+    minSize: 125,
+    maxSize: 200,
+    currentSize: 125,
   },
   [ACT_COLUMNS.createdAt]: {
+    name: 'Дата создания',
     defaultVisibility: true,
     canChangeVisibility: true,
+    minSize: 150,
+    maxSize: 200,
+    currentSize: 150,
   },
   [ACT_COLUMNS.editedAt]: {
+    name: 'Дата изменения',
     defaultVisibility: true,
     canChangeVisibility: true,
+    minSize: 150,
+    maxSize: 200,
+    currentSize: 150,
   },
 };
-
-export const ACT_COLUMNS_NAMES: Record<ActColumn, string> = {
-  [ACT_COLUMNS.title]: 'Название',
-  [ACT_COLUMNS.type]: 'Тип',
-  [ACT_COLUMNS.category]: 'Категория',
-  [ACT_COLUMNS.author]: 'Автор',
-  [ACT_COLUMNS.department]: 'Департамент',
-  [ACT_COLUMNS.createdAt]: 'Дата создания',
-  [ACT_COLUMNS.editedAt]: 'Дата изменения',
-};
-
-const columnHelper = createColumnHelper<TableFeatures, Act>();
-
-export const ACT_COLUMNS_DATA: ColumnDef<TableFeatures, Act>[] = columnHelper.columns([
-  columnHelper.accessor('title', {
-    id: ACT_COLUMNS.title,
-    header: ACT_COLUMNS_NAMES.title,
-    cell: (info) =>
-      flexRenderComponent(TableSimpleCellComponent, {
-        inputs: { data: info.getValue() },
-      }),
-  }),
-  columnHelper.accessor('type', {
-    id: ACT_COLUMNS.type,
-    header: ACT_COLUMNS_NAMES.type,
-    cell: (info) =>
-      flexRenderComponent(TableSimpleCellComponent, {
-        inputs: { data: info.getValue() },
-      }),
-  }),
-  columnHelper.accessor('category', {
-    id: ACT_COLUMNS.category,
-    header: ACT_COLUMNS_NAMES.category,
-    cell: (info) =>
-      flexRenderComponent(TableSimpleCellComponent, {
-        inputs: { data: info.getValue() },
-      }),
-  }),
-  columnHelper.accessor('author', {
-    id: ACT_COLUMNS.author,
-    header: ACT_COLUMNS_NAMES.author,
-    cell: (info) =>
-      flexRenderComponent(TableSimpleCellComponent, {
-        inputs: { data: info.getValue() },
-      }),
-  }),
-  columnHelper.accessor('department', {
-    id: ACT_COLUMNS.department,
-    header: ACT_COLUMNS_NAMES.department,
-    cell: (info) =>
-      flexRenderComponent(TableDepartmentCellComponent, {
-        inputs: { department: info.getValue() },
-      }),
-  }),
-  columnHelper.accessor('createdAt', {
-    id: ACT_COLUMNS.createdAt,
-    header: ACT_COLUMNS_NAMES.createdAt,
-    cell: (info) =>
-      flexRenderComponent(TableDateCellComponent, { inputs: { time: info.getValue() } }),
-  }),
-  columnHelper.accessor('editedAt', {
-    id: ACT_COLUMNS.editedAt,
-    header: ACT_COLUMNS_NAMES.editedAt,
-    cell: (info) =>
-      flexRenderComponent(TableDateCellComponent, { inputs: { time: info.getValue() } }),
-  }),
-]);
