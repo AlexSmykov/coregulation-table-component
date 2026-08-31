@@ -26,6 +26,7 @@ import {
   Updater,
 } from '@tanstack/angular-table';
 import { DEFAULT_PAGINATION } from '../../../core/consts/pagination.const';
+import { AppTableWrapperSortIndicatorPipe } from './table-wrapper-sort-indicator.pipe';
 import {
   COLUMN_SIZE_STATE_SERVICE_TOKEN,
   COLUMN_VISIBILITY_STATE_SERVICE_TOKEN,
@@ -39,7 +40,7 @@ const MAX_COLUMN_SIZE = 500;
   templateUrl: './table-wrapper.component.html',
   styleUrl: './table-wrapper.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [FlexRenderCell],
+  imports: [FlexRenderCell, AppTableWrapperSortIndicatorPipe],
 })
 export class TableWrapperComponent<Data extends object> {
   readonly data = input.required<Data[]>();
@@ -50,6 +51,7 @@ export class TableWrapperComponent<Data extends object> {
   readonly withColumnResize = input(true);
   readonly withColumnOrder = input(true);
   readonly itemCount = input(0);
+  readonly isFirstLoading = input(false);
   readonly isLoading = input(false);
 
   readonly pagination = model<PaginationState>(DEFAULT_PAGINATION);
@@ -138,4 +140,6 @@ export class TableWrapperComponent<Data extends object> {
       return { ...oldValue, pageIndex: page };
     });
   }
+
+  protected readonly event = event;
 }

@@ -1,7 +1,7 @@
-@if (isLoading()) {
+@if (isFirstLoading()) {
   <p>Загрузка...</p>
 } @else {
-  <div class="table-wrapper">
+  <div class="table-wrapper" [class.disabled]="isLoading()">
     <table class="table" [style]="tableStyle()">
       <thead class="table-head">
         @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
@@ -13,11 +13,17 @@
                 [style.width]="'calc(var(--header-' + header.id + '-size) * 1px)'"
               >
                 @if (!header.isPlaceholder) {
-                  <div class="ellipsis">
+                  <button
+                    class="table-header-cell-content-wrapper ellipsis"
+                    [class.sortable]="header.column.getCanSort()"
+                    (click)="header.column.getToggleSortingHandler()?.($event)"
+                  >
                     <ng-container *flexRenderHeader="header; let headerCell">
                       {{ headerCell }}
                     </ng-container>
-                  </div>
+
+                    {{ header.column.getIsSorted() | appTableWrapperSortIndicator }}
+                  </button>
 
                   <div
                     class="resizer"

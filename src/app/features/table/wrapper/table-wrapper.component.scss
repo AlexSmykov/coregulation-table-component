@@ -1,3 +1,10 @@
+.table-wrapper {
+  &.disabled {
+    opacity: 0.6;
+    user-select: none;
+  }
+}
+
 .pagination-buttons {
   display: flex;
   flex-direction: row;
@@ -7,6 +14,12 @@
 .table-header-cell {
   position: relative;
   white-space: nowrap;
+
+  .table-header-cell-content-wrapper {
+    border: none;
+    background: none;
+    outline: none;
+  }
 }
 
 .table-body {
@@ -43,4 +56,9 @@
   min-width: 0;
   text-overflow: ellipsis;
   overflow-x: hidden;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
 }
