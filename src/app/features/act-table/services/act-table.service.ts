@@ -1,18 +1,18 @@
-import { computed, inject, model, Service } from '@angular/core';
+import { computed, inject, Service, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { PaginationState, SortingState } from '@tanstack/angular-table';
 import { skipWhile, take } from 'rxjs';
-import { DEFAULT_PAGINATION } from '../../core/consts/pagination.const';
-import { QueryActService } from '../../core/queries/query-act.service';
-import { Search } from '../../core/types/search.type';
+import { DEFAULT_PAGINATION } from '../../../core/consts/pagination.const';
+import { QueryActService } from '../../../core/queries/query-act.service';
+import { Search } from '../../../core/types/search.type';
 
 @Service({ autoProvided: false })
 export class ActTableService {
   readonly #queryActService = inject(QueryActService);
 
-  readonly pagination = model<PaginationState>(DEFAULT_PAGINATION);
-  readonly sort = model<SortingState>([]);
+  readonly pagination = signal<PaginationState>(DEFAULT_PAGINATION);
+  readonly sort = signal<SortingState>([]);
 
   readonly #actsQuery = injectQuery(() =>
     this.#queryActService.getActAiNoteVersionOptions(this.#searchFilters()),

@@ -6,6 +6,8 @@
   [itemCount]="itemCount()"
   [isFirstLoading]="isFirstLoading()"
   [isLoading]="isLoading()"
-  [(pagination)]="pagination"
-  [(sorting)]="sort"
+  [pagination]="pagination()"
+  [sorting]="sort()"
+  (paginationChange)="pagination.set($event)"
+  (sortingChange)="sort.set($event)"
 />
